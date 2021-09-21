@@ -40,9 +40,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       });
       await api.get('/products').then(product =>{
         const filteredProduct = product.data.filter((product: Product) => product.id === productId);
-        console.log(filteredProduct[0]);
-        
-      })
+      });
+      
     } catch {
       // TODO
     }
