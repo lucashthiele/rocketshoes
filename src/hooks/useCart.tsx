@@ -69,7 +69,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const removeProduct = (productId: number) => {
     try {
-      // TODO
+      const filteredCart = cart.filter((product) => product.id !== productId);
+      setCart(filteredCart);
     } catch {
       // TODO
     }
