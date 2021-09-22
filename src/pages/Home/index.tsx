@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { MdAddShoppingCart } from 'react-icons/md';
+import { useState, useEffect } from "react";
+import { MdAddShoppingCart } from "react-icons/md";
 
-import { ProductList } from './styles';
-import { api } from '../../services/api';
-import { formatPrice } from '../../util/format';
-import { useCart } from '../../hooks/useCart';
+import { ProductList } from "./styles";
+import { api } from "../../services/api";
+import { formatPrice } from "../../util/format";
+import { useCart } from "../../hooks/useCart";
 
 interface Product {
   id: number;
@@ -25,15 +25,17 @@ const Home = (): JSX.Element => {
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const { addProduct, cart } = useCart();
 
-  // const cartItemsAmount = cart.reduce((sumAmount, product) => {
-  //   // TODO
-  // }, {} as CartItemsAmount)
+  const cartItemsAmount = cart.reduce((sumAmount, product) => {
+    //console.log(sumAmount);
+    //console.log(product);
+    return [];
+  }, {} as CartItemsAmount);
 
   useEffect(() => {
     async function loadProducts() {
-      await api.get('/products').then(products => {
+      await api.get("/products").then((products) => {
         setProducts(products.data);
-      })
+      });
     }
 
     loadProducts();
@@ -46,9 +48,7 @@ const Home = (): JSX.Element => {
   return (
     <ProductList>
       {products.map((product) => {
-        console.log(product);
-        
-        return(
+        return (
           <li key={product.id}>
             <img src={product.image} alt="Product" />
             <strong>{product.title}</strong>
@@ -60,13 +60,13 @@ const Home = (): JSX.Element => {
             >
               <div data-testid="cart-product-quantity">
                 <MdAddShoppingCart size={16} color="#FFF" />
-                {/* {cartItemsAmount[product.id] || 0} */} 0
+                {cartItemsAmount[product.id] || 0}
               </div>
 
               <span>ADICIONAR AO CARRINHO</span>
             </button>
           </li>
-        )
+        );
       })}
     </ProductList>
   );
