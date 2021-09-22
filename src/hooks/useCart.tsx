@@ -30,12 +30,21 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     return [];
   });
 
+  
+
   const addProduct = async (productId: number) => {
-    try {
+    try { 
+      
       const filteredProduct = await api.get("/products").then((response) => {
         return response.data.filter(
           (product: Product) => product.id === productId
         );
+      });
+
+      const filteredStock = await api.get("/stock").then(response => {
+        return response.data.filter(
+          (productStock: Stock) => productStock.id === productId
+        )
       });
 
       const existingProduct = cart.filter(
@@ -51,19 +60,38 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           },
         ]);
       } else {
-        setCart(
-          cart.map((product: Product) =>
-            product.id !== existingProduct[0].id
-              ? product
-              : {
-                  ...product,
-                  amount: product.amount + 1,
-                }
-          )
-        );
+        
+        if(filteredStock[0].amount === existingProduct[0].amount){
+          toast.error('Quantidade solicitada fora de estoque', {
+            position: "top-right",
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }else{
+          setCart(
+            cart.map((product: Product) =>
+              product.id !== existingProduct[0].id
+                ? product
+                : {
+                    ...product,
+                    amount: product.amount + 1,
+                  }
+            )
+          );
+        }
       }
     } catch {
-      // TODO
+      toast.error('Erro na alteração de quantidade do produto', {
+        position: "top-right",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
@@ -81,6 +109,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
+      const stock = await api.get("/stock").then(response => response.data);
     } catch {
       // TODO
     }
