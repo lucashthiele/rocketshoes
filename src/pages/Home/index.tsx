@@ -67,23 +67,6 @@ const Home = (): JSX.Element => {
           </li>
         );
       })}
-      <li>
-        <img src="../../assets/images/background.svg" alt="Product" />
-        <strong>teste</strong>
-        <span>{formatPrice(100)}</span>
-        <button
-          type="button"
-          data-testid="add-product-button"
-          onClick={() => handleAddProduct(45)}
-        >
-          <div data-testid="cart-product-quantity">
-            <MdAddShoppingCart size={16} color="#FFF" />
-            {cartItemsAmount[45] || 0}
-          </div>
-
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
     </ProductList>
   );
 };
